@@ -14,3 +14,5 @@ function fibs(n, memo=null){
     memo[n-1] = fibs(n-1, memo) + fibs(n-2, memo);
     return memo
 }
+
+export {fibs}
