@@ -100,13 +100,44 @@ const LinkedList = function(node){
         node.next = current;
     }
 
+    const removeAt = function(index){
+        if (index === 0){
+            head = head.next;
+        } else{
+            let current = head;
+            let place = 0;
+            while (current.next !== null && place < index-1){
+                current = current.next;
+                place++;
+            }
+            if (place === index-1 && current.next !== null){
+                current.next = current.next.next;
+            }
+        }
+    }
 
-    return {head, append, size, tail, at, pop, toString, find, contains, prepend}
+    const insertAt = function(value, index){
+        if(index === 0){
+            let current = head;
+            head = Node(value);
+            head.next = current;
+        } else {
+            let current = head;
+            let place = 0;
+            let prev;
+            while (current.next !== null && place < index){
+                prev = current;
+                current = current.next;
+                place++;
+            }
+            if (index === place){
+                prev.next = Node(value);
+                prev = prev.next;
+                prev.next = current;
+            }
+        }
+    }
+
+
+    return {head, append, size, tail, at, pop, toString, find, contains, prepend, removeAt, insertAt}
 }
-
-let list = LinkedList(Node(1));
-list.append(Node(2));
-list.append(Node(3));
-console.log(list.toString());
-list.prepend(Node(0));
-console.log(list.toString());
