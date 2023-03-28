@@ -44,11 +44,61 @@ const Tree = function(node=null) {
         }
     }
 
-    const print = () => {
-        prettyPrint(root);
+    const findmin = (node) => {
+        current = node;
+        while (current.left !== null){
+            current = current.left;
+        }
+        return current.value;
     }
 
-    return {root, buildTree, print, add}
+    const remove = (value, node="start") => {
+        if (node==="start"){
+            root = remove(value, root);
+        } else{
+            if (value < node.value){
+                node.left = remove(value, node.left);
+            } else if (value > node.value){
+                node.right = remove(value, node.right);
+            } else{
+                if(node.left===null){
+                    temp = node.right;
+                    node = null;
+                    return temp;
+                } else if (node.right===null){
+                    temp = node.left;
+                    node = null;
+                    return temp;
+                } 
+                node.value = findmin(node.right);
+                node.right = remove(node.value, node.right);
+            }
+            return node;
+        }
+
+
+        if (value < node.value){
+            remove(value, node.left);
+        } else if (value > node.value){
+            remove(value, node.right);
+        } else{
+            if (node.left === null){
+                node = node.right;
+            } else if (node.right == null){
+                node = node.left;
+            } else{
+                node.value = findmin(node.right);
+                remove(node.value, node.right);
+            }
+        }
+    }
+
+    const print = () => {
+        prettyPrint(root);
+        console.log('');
+    }
+
+    return {root, buildTree, print, add, remove}
 
 }
 
@@ -68,10 +118,10 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 let tree = Tree();
 tree.buildTree([1, 7, 4, 23, 4, 3, 5, 7, 67, 6345, 324, 106, -7, 99, 77]);
-tree.print();
 tree.add(47);
-tree.print();
 tree.add(7);
+tree.print();
+tree.remove(4);
 tree.print();
 
 // let tree = Tree(Node(0));
