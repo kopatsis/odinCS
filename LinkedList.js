@@ -141,3 +141,8 @@ const LinkedList = function(node){
 
     return {head, append, size, tail, at, pop, toString, find, contains, prepend, removeAt, insertAt}
 }
+
+
+let ree = LinkedList(null);
+ree.prepend(Node(-1));
+console.log(ree.toString());
