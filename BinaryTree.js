@@ -14,7 +14,6 @@ const Tree = function(node=null) {
         let set = new Set(arr.sort(function(a, b){return a - b}));
         let toArr = Array.from(set);
         root = recur(toArr, new Set(), 0, toArr.length);
-        // root = Node(10);
     }
 
     const recur = (input, used, start, end) => {
@@ -29,11 +28,27 @@ const Tree = function(node=null) {
         return null;
     }
 
+    const add = (value, node=root) => {
+        if (value < node.value){
+            if (node.left === null){
+                node.left = Node(value);
+            } else{
+                add(value, node.left);
+            }
+        } else if (value > node.value){
+            if (node.right === null){
+                node.right = Node(value);
+            } else{
+                add(value, node.right);
+            }
+        }
+    }
+
     const print = () => {
         prettyPrint(root);
     }
 
-    return {root, buildTree, recur, print}
+    return {root, buildTree, print, add}
 
 }
 
@@ -52,7 +67,11 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 }
 
 let tree = Tree();
-tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 106, -7, 99, 77]);
+tree.buildTree([1, 7, 4, 23, 4, 3, 5, 7, 67, 6345, 324, 106, -7, 99, 77]);
+tree.print();
+tree.add(47);
+tree.print();
+tree.add(7);
 tree.print();
 
 // let tree = Tree(Node(0));
