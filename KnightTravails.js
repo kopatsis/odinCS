@@ -112,43 +112,22 @@ class Queue {
     get emp() {
       return this.len === 0;
     }
-  }
+}
 
-let board = Graphing();
-board.generateKeys();
-board.generatePairs();
-console.log(board.retGraph());
-console.log(board.fastestPath([0,6],[4,1]));
-// board.connections([4,1]);
+// DOM Manipulation below for basic GUI
 
+const board = document.querySelector('.board');
 
-
-// let board = [];
-// for (let i = 0; i < 8; i++){
-//     let row = [];
-//     for (let j = 0; j < 8; j++){
-//         row.push(' ');
-//     }
-//     board.push(row);
-// }
-// console.log(board);
-
-// console.log(new Array(64).fill(null)[35]);
-
-// let rod = new Queue();
-// console.log(rod.emp);
-// rod.enqueue(4);
-// rod.enqueue(3);
-// rod.enqueue(2);
-// rod.enqueue(1);
-// console.log(rod.emp);
-// console.log(rod.len);
-// rod.dequeue();
-// rod.dequeue();
-// console.log(rod.emp);
-// console.log(rod.len);
-// rod.dequeue();
-// rod.dequeue();
-// console.log(rod.emp);
-// console.log(rod.len);
-
+function boardCreate() {
+    for (let i = 0; i < 8; i++){
+        const row = document.createElement('div');
+        row.className = `row ${i}`;
+        for (let j = 0; j < 8; j++){
+            const col = document.createElement('div');
+            col.className = `col ${j}`;
+            row.appendChild(col);
+        }
+        board.appendChild(row);
+    }
+}
+boardCreate();
