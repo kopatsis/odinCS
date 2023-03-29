@@ -93,12 +93,92 @@ const Tree = function(node=null) {
         }
     }
 
+    const find = (value, node=root) => {
+        if (node.value === value){
+            return node;
+        } else if (node.left===null && node.right===null){
+            return null;
+        }
+        let left = null;
+        let right = null;
+        if (node.left !== null){
+            left = find(value, node.left);
+        }
+        if (node.right !== null){
+            right = find(value, node.right);
+        }
+        if (left !== null) return left;
+        return right;
+    }
+
     const print = () => {
         prettyPrint(root);
         console.log('');
     }
 
-    return {root, buildTree, print, add, remove}
+    const isBalanced = (node=root) => {
+        if (node===null){
+            return true;
+        } else if (Math.abs(depth(node.left) - depth(node.right)) > 1){
+            return false;
+        }
+        return isBalanced(node.left) && isBalanced(node.right);
+    }
+
+    const depth = (node=root) => {
+        if (node === null){
+            return 0;
+        }
+        return Math.max(1 + depth(node.left), 1 + depth(node.right))
+    }
+
+    const rebalance = () => {
+        let arr = inorder();
+        buildTree(arr);
+    }
+
+    const inorder = (node=root, arr=null) => {
+        if (arr===null){
+            var arr = [];
+        }
+        if (node.left !== null){
+            arr = inorder(node.left, arr)
+        }
+        arr.push(node.value);
+        if (node.right !== null){
+            arr = inorder(node.right, arr)
+        }
+        return arr;
+    }
+
+    const preorder = () => {
+
+        function prerec(node, arr){
+            arr.push(node.value);
+            if(node.left !== null) prerec(node.left, arr);
+            if(node.right !== null) prerec(node.right, arr);
+        }
+
+        if(root===null) return [];
+        let arr = [];
+        prerec(root, arr);
+        return arr;
+    }
+
+    const postorder = () => {
+        function postrec(node, arr){
+            if(node.left !== null) postrec(node.left, arr);
+            if(node.right !== null) postrec(node.right, arr);
+            arr.push(node.value);
+        }
+
+        if(root===null) return [];
+        let arr = [];
+        postrec(root, arr);
+        return arr;
+    }
+
+    return {root, buildTree, print, add, remove, find, isBalanced, depth, rebalance, inorder, preorder, postorder}
 
 }
 
@@ -116,19 +196,17 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 }
 
-let tree = Tree();
-tree.buildTree([1, 7, 4, 23, 4, 3, 5, 7, 67, 6345, 324, 106, -7, 99, 77]);
-tree.add(47);
-tree.add(7);
-tree.print();
-tree.remove(4);
-tree.print();
+// let tree = Tree();
+// tree.buildTree([1, 7, 4, 23, 4, 3, 5, 7, 67, 6345, 324, 106, -7, 99, 77]);
+// tree.add(47);
+// tree.add(7);
+// tree.print();
+// tree.remove(4);
+// tree.add(-9);
+// tree.print();
+// tree.rebalance();
+// tree.print();
 
-// let tree = Tree(Node(0));
-// tree.root.left = Node(1);
-// tree.root.right = Node(2);
-// tree.root.left.left = Node(3);
-// tree.root.left.right = Node(4);
-// tree.root.right.left = Node(5);
-// tree.root.right.right = Node(6);
-// prettyPrint(tree.root);
+// console.log(tree.inorder());
+// console.log(tree.preorder());
+// console.log(tree.postorder());
