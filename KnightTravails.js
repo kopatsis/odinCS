@@ -116,6 +116,10 @@ class Queue {
 
 // DOM Manipulation below for basic GUI
 
+let chess = Graphing();
+chess.generateKeys();
+chess.generatePairs();
+
 const board = document.querySelector('.board');
 
 function boardCreate() {
@@ -131,3 +135,57 @@ function boardCreate() {
     }
 }
 boardCreate();
+
+let state = "start";
+let start = null;
+let end = null;
+
+const direct = document.querySelector('.instruction');
+const boxes = document.querySelectorAll('.col');
+boxes.forEach(box => box.onclick = selector);
+
+function selector(e){
+    if (state === "start"){
+        start = [parseInt(e.target.parentNode.classList[1]), parseInt(e.target.classList[1])];
+        e.target.classList.add('green');
+        direct.textContent = "Click a square for the knight to end";
+        state = "end";
+    } else if (state === "end"){
+        end = [parseInt(e.target.parentNode.classList[1]), parseInt(e.target.classList[1])];
+        e.target.classList.add('red');
+        direct.textContent = "Click start to start the knights travels";
+        state = "ready";
+    }
+}
+
+const starter = document.querySelector('.starter');
+const reset = document.querySelector('.reset');
+
+starter.onclick = knightMover;
+
+function knightMover(){
+    if (state === "ready"){
+        let arr = chess.fastestPath(start, end);
+        for (let i = 0; i < arr.length; i++){
+            boxes[arr[i][0]*8+arr[i][1]].classList.add('orange');
+            boxes[arr[i][0]*8+arr[i][1]].textContent = `Move ${i}`;
+        }
+        state = "done";
+        direct.textContent = "Click reset to reset the board";
+    }
+}
+
+reset.onclick = reseter;
+
+function reseter(){
+    for(let i = 0; i < boxes.length; i++){
+        boxes[i].classList.remove('orange');
+        boxes[i].classList.remove('red');
+        boxes[i].classList.remove('green');
+        boxes[i].textContent = '';
+    }
+    state = "start";
+    start = null;
+    end = null;
+    direct.textContent = "Click a square for the knight to start from";
+}
